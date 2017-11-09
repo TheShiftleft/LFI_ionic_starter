@@ -1,0 +1,19 @@
+<ion-header>
+    
+      <ion-navbar color="navbg">
+        <ion-title>INFO</ion-title>
+      </ion-navbar>
+    
+    </ion-header>
+    
+    
+    <ion-content padding>
+      <!--<img class="logo" src="img/Qu4u_InApp.png">-->
+      <br />
+      <h1 class="center_txt">No connection! </h1>
+      <h3 class="center_txt">Please connect to the Internet and restart Application...</h3>
+      <br />
+      <button ion-button clear (click)="checkNetwork()">Display Connection info</button>
+      <br />
+      <button ion-button block (click)="okAction()">OK</button>
+    </ion-content>

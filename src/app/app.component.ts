@@ -1,44 +1,118 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform, App, MenuController, AlertController, ToastController  } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
+import { OnePage } from '../pages/one/one';
+import { TwoPage } from '../pages/two/two';
+import { AboutPage } from '../pages/about/about';
+import { ContactPage } from '../pages/contact/contact';
+import { TabsPage } from '../pages/tabs/tabs';
+import { AdminPage } from '../pages/admin/admin';
+//import { Util } from '../providers/util/util';
+import { NetworkService } from '../providers/network/network';
+import { Splash } from '../pages/splash/splash';
 
 @Component({
-  templateUrl: 'app.html'
+  templateUrl: 'app.html',
+  //providers:[NetworkService],
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
+  public rootPage: any = TabsPage;
+  public pages: Array<{title: string, component: any, icon: string}>;
 
-  rootPage: any = HomePage;
-
-  pages: Array<{title: string, component: any}>;
-
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
-    this.initializeApp();
-
-    // used for an example of ngFor and navigation
-    this.pages = [
-      { title: 'Home', component: HomePage },
-      { title: 'List', component: ListPage }
+  constructor(
+      public platform: Platform, 
+      public statusBar: StatusBar, 
+      public toastCtrl: ToastController,
+      public alertCtrl: AlertController,
+      public app: App, 
+      public menuCtrl: MenuController, 
+      public network: NetworkService, 
+      public splashScreen: SplashScreen) 
+  {
+    this.pages = [  // Menu Pages
+      { title: 'About', component: AboutPage, icon: 'information-circle' },
+      { title: 'Contact', component: ContactPage, icon: 'person' },
+      { title: 'Admin Only', component: AdminPage, icon: 'build' }
     ];
+    menuCtrl.enable(true, 'myMenu');
+    platform.ready().then(() => {
+      console.log("MyApp.constructor() -> Platform ready");
+      this.statusBar.styleDefault();
+      // splashscreen should have been shown up till now - Hide it.
+      this.hideSplashScreen();
+      this.initializeApp();
+      this.platform.pause.subscribe(() => {
+            console.log('[INFO] App paused');
+      });
 
+      this.platform.resume.subscribe(() => {
+            console.log('[INFO] App resumed');
+            this.hideSplashScreen();
+            this.initializeApp();
+            //this.util.reloadApp(this.alertCtrl,"Restart to upload latest data ...")
+            //window.location.reload();
+      });
+    });
   }
 
   initializeApp() {
-    this.platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
-    });
+    console.log("MyApp.initializeApp()");
+    // If no internet, go straight to splash
+    if (this.network.isOffline()) {
+        this.rootPage = Splash;
+      }
+      // if internet available, proceed to login
+      else {
+        console.log(" -> Network is online");
+      }
   }
 
   openPage(page) {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
+  }
+
+  registerBackButton(){
+    //Registration of push in Android and Windows Phone
+      this.platform.registerBackButtonAction(() => {
+        let nav = this.app.getActiveNav();
+        if (nav.canGoBack()){ //Can we go back?
+          console.log(" --> can go back, popping");
+          nav.pop();
+        }else{
+          let alert = this.alertCtrl.create({
+            title: "EXIT Application?",
+            message: " Do you want to exit the application?",
+            buttons: [{
+              text: 'YES',
+              handler: data => {
+                console.log(" --> exiting");
+                this.platform.exitApp(); //Exit from app;
+              }
+            }, {
+              text: 'NO',
+              handler: data => {
+                console.log(" --> Return to TabsPage");
+                nav.setRoot(TabsPage);
+              }
+            }]
+          });
+          alert.present();   
+        }
+      });
+  }
+
+
+  hideSplashScreen() {
+    if (this.splashScreen) {
+      setTimeout(() => {
+        this.splashScreen.hide();
+      }, 100);
+    }
   }
 }
