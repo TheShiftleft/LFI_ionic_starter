@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
-import { HomePage } from '../home/home';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
+//import { HomePage } from '../home/home';
 import { OnePage } from '../one/one';
 import { TwoPage } from '../two/two';
 
 
-//@IonicPage()
+@IonicPage()
 @Component({
   selector: 'page-tabs',
   templateUrl: 'tabs.html',
@@ -13,7 +13,7 @@ import { TwoPage } from '../two/two';
 export class TabsPage {
   // this tells the tabs component which Pages
   // should be each tab's root Page
-  tab1Root: any = HomePage;
+  tab1Root: any = 'HomePage';
   tab2Root: any = OnePage;
   tab3Root: any = TwoPage;
 

@@ -2,17 +2,14 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, App, MenuController, AlertController, ToastController  } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-
-//import { HomePage } from '../pages/home/home';
-//import { OnePage } from '../pages/one/one';
-//import { TwoPage } from '../pages/two/two';
 import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
-import { TabsPage } from '../pages/tabs/tabs';
+//import { TabsPage } from '../pages/tabs/tabs';
 import { AdminPage } from '../pages/admin/admin';
 //import { Util } from '../providers/util/util';
 import { NetworkService } from '../providers/network/network';
-import { Splash } from '../pages/splash/splash';
+//import { Splash } from '../pages/splash/splash';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 @Component({
   templateUrl: 'app.html',
@@ -20,7 +17,7 @@ import { Splash } from '../pages/splash/splash';
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
-  public rootPage: any = TabsPage;
+  public rootPage: string; //any = TabsPage;
   public pages: Array<{title: string, component: any, icon: string}>;
 
   constructor(
@@ -31,7 +28,8 @@ export class MyApp {
       public app: App, 
       public menuCtrl: MenuController, 
       public network: NetworkService, 
-      public splashScreen: SplashScreen) 
+      public splashScreen: SplashScreen,
+      public afAuth: AngularFireAuth) 
   {
     this.pages = [  // Menu Pages
       { title: 'About', component: AboutPage, icon: 'information-circle' },
@@ -39,6 +37,16 @@ export class MyApp {
       { title: 'Admin Only', component: AdminPage, icon: 'build' }
     ];
     menuCtrl.enable(true, 'myMenu');
+    afAuth.authState.subscribe(user => {
+      if(!user){
+        this.rootPage = 'LoginPage';
+        // call unsubscribe() function returned by onAuthStateChanged(), 
+        // once redirected, so it stops listening.
+        // unsubscribe();
+      } else{
+        this.rootPage = 'TabsPage';
+      }
+    })
     platform.ready().then(() => {
       console.log("MyApp.constructor() -> Platform ready");
       this.statusBar.styleDefault();
@@ -63,7 +71,7 @@ export class MyApp {
     console.log("MyApp.initializeApp()");
     // If no internet, go straight to splash
     if (this.network.isOffline()) {
-        this.rootPage = Splash;
+        this.rootPage = 'Splash';
       }
       // if internet available, proceed to login
       else {
@@ -98,7 +106,7 @@ export class MyApp {
               text: 'NO',
               handler: data => {
                 console.log(" --> Return to TabsPage");
-                nav.setRoot(TabsPage);
+                nav.setRoot('TabsPage');
               }
             }]
           });

@@ -5,7 +5,7 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { IonicStorageModule } from '@ionic/storage';
 
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
+//import { HomePage } from '../pages/home/home';
 import { OnePage } from '../pages/one/one';
 import { TwoPage } from '../pages/two/two';
 import { AboutPage } from '../pages/about/about';
@@ -13,42 +13,52 @@ import { ContactPage } from '../pages/contact/contact';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { TabsPage } from '../pages/tabs/tabs';
-import { Splash } from '../pages/splash/splash';
+//import { TabsPage } from '../pages/tabs/tabs';
+//import { Splash } from '../pages/splash/splash';
 
 import { AdminPage } from '../pages/admin/admin';
 import { Network } from '@ionic-native/network';
 import { NetworkService} from '../providers/network/network';
 import { Util} from '../providers/util/util';
+import { AuthProvider } from '../providers/auth/auth';
+
+// Firebase authorisation
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { firebaseConfig } from './credentials';
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,     // Page
+    //HomePage,     // Page
     OnePage,      // Page
     TwoPage,      // Page
     AboutPage,    // Menu
     ContactPage,  // Menu
     AdminPage,    // Menu
-    TabsPage, 
-    Splash  
+    //TabsPage, 
+    //Splash  
   ],
   imports: [
     BrowserModule,
     IonicStorageModule.forRoot(),
     IonicModule.forRoot(MyApp),
+    AngularFireModule.initializeApp(firebaseConfig), 
+    AngularFireAuthModule, 
+    AngularFireDatabaseModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage,
+    //HomePage,
     OnePage,
     TwoPage,
     AboutPage,
     ContactPage,
     AdminPage,
-    TabsPage,
-    Splash
+    //TabsPage,
+    //Splash
   ],
   providers: [
     StatusBar,
@@ -56,7 +66,8 @@ import { Util} from '../providers/util/util';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     Network,
     NetworkService,
-    Util
+    Util,
+    AuthProvider
   ]
 })
 export class AppModule {}
