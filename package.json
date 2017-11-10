@@ -1,8 +1,8 @@
 {
-    "name": "LFI_starter",
+    "name": "lfi-starter",
     "version": "0.0.1",
-    "author": "Ionic Framework",
-    "homepage": "http://ionicframework.com/",
+    "author": "TheShiftLeft",
+    "homepage": "http://www.theshiftleft.com/",
     "private": true,
     "scripts": {
         "clean": "ionic-app-scripts clean",
@@ -25,8 +25,14 @@
         "@ionic-native/splash-screen": "4.3.3",
         "@ionic-native/status-bar": "4.3.3",
         "@ionic/storage": "2.1.3",
+        "cordova-android": "^6.2.3",
+        "cordova-plugin-device": "^1.1.4",
+        "cordova-plugin-ionic-webview": "^1.1.16",
         "cordova-plugin-network-information": "^1.3.3",
+        "cordova-plugin-splashscreen": "^4.0.3",
+        "cordova-plugin-whitelist": "^1.3.1",
         "ionic-angular": "3.9.2",
+        "ionic-plugin-keyboard": "^2.2.1",
         "ionicons": "3.0.0",
         "rxjs": "5.5.2",
         "sw-toolbox": "3.6.0",
@@ -39,7 +45,15 @@
     "description": "An Ionic project",
     "cordova": {
         "plugins": {
-            "cordova-plugin-network-information": {}
-        }
+            "cordova-plugin-network-information": {},
+            "cordova-plugin-device": {},
+            "cordova-plugin-ionic-webview": {},
+            "cordova-plugin-splashscreen": {},
+            "cordova-plugin-whitelist": {},
+            "ionic-plugin-keyboard": {}
+        },
+        "platforms": [
+            "android"
+        ]
     }
 }

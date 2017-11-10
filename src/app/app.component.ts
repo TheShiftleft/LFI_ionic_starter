@@ -3,9 +3,9 @@ import { Nav, Platform, App, MenuController, AlertController, ToastController  }
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { HomePage } from '../pages/home/home';
-import { OnePage } from '../pages/one/one';
-import { TwoPage } from '../pages/two/two';
+//import { HomePage } from '../pages/home/home';
+//import { OnePage } from '../pages/one/one';
+//import { TwoPage } from '../pages/two/two';
 import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
 import { TabsPage } from '../pages/tabs/tabs';
