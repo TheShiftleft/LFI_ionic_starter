@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="theshiftleft.LFI_ionic_starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>TheShiftLeft Starter</name>
+    <name>Starter</name>
     <description> Starter templates for TheShiftLeft Projects</description>
     <author email="dirk@theshiftleft.com" href="http://theshiftleft.com/">Dirk Bertels</author>
     <content src="index.html" />
