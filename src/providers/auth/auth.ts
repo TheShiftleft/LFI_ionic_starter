@@ -14,6 +14,8 @@ export class AuthProvider {
     console.log('AuthProvider Constructor');
     afAuth.authState.subscribe(user => {
       if(user) {
+        // only at app init ... stored to local storage
+        console.log("data received from Firebase for user: " + JSON.stringify(user));
         this.userId = user.uid;
       }
     });
@@ -38,7 +40,7 @@ export class AuthProvider {
       // id generated for the user.
       this.afDatabase.object(`/userProfile/${user.uid}/`)
       .set({
-        admin: true, 
+        admin: false, 
         email, 
         fullName
       });
@@ -70,5 +72,4 @@ export class AuthProvider {
       });
     });
   }
-
 }

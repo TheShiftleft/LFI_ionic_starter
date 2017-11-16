@@ -28,6 +28,22 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { firebaseConfig } from './credentials';
 
+// JWT
+import {HttpModule, Http} from '@angular/http';
+import {Storage} from '@ionic/storage';
+import {AuthHttp, AuthConfig,JwtHelper} from 'angular2-jwt';
+
+let storage = new Storage({});
+
+// for Laravel Authorisation
+export function getAuthHttp(http) {
+  return new AuthHttp(new AuthConfig({
+    noJwtError: true,
+    globalHeaders: [{'Accept': 'application/json'}],
+    tokenGetter: (() => storage.get('id_token')),
+  }), http);
+}
+
 @NgModule({
   declarations: [
     MyApp,
@@ -44,6 +60,8 @@ import { firebaseConfig } from './credentials';
     BrowserModule,
     IonicStorageModule.forRoot(),
     IonicModule.forRoot(MyApp),
+    HttpModule, 
+    IonicStorageModule.forRoot(),
     AngularFireModule.initializeApp(firebaseConfig), 
     AngularFireAuthModule, 
     AngularFireDatabaseModule
@@ -63,7 +81,9 @@ import { firebaseConfig } from './credentials';
   providers: [
     StatusBar,
     SplashScreen,
+    JwtHelper,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
+    {provide: AuthHttp, useFactory: getAuthHttp, deps: [Http]},
     Network,
     NetworkService,
     Util,

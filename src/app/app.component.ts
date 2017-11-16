@@ -31,7 +31,8 @@ export class MyApp {
       public splashScreen: SplashScreen,
       public afAuth: AngularFireAuth) 
   {
-    this.pages = [  // Menu Pages
+    // Add Menu Pages here!
+    this.pages = [  
       { title: 'About', component: AboutPage, icon: 'information-circle' },
       { title: 'Contact', component: ContactPage, icon: 'person' },
       { title: 'Admin Only', component: AdminPage, icon: 'build' }
@@ -39,26 +40,31 @@ export class MyApp {
     menuCtrl.enable(true, 'myMenu');
     afAuth.authState.subscribe(user => {
       if(!user){
+        console.log("MyApp.constructor() -> No user present yet ..");
         this.rootPage = 'LoginPage';
         // call unsubscribe() function returned by onAuthStateChanged(), 
         // once redirected, so it stops listening.
         // unsubscribe();
       } else{
+        console.log("MyApp.constructor() -> user present ..");
+        // 'user' contains all firebase data (including tokens)
+        // has been stored to local storage at app init.
+        console.log(JSON.stringify(user));
         this.rootPage = 'TabsPage';
       }
     })
     platform.ready().then(() => {
-      console.log("MyApp.constructor() -> Platform ready");
+      console.log("MyApp.constructor() ->  -> Platform ready");
       this.statusBar.styleDefault();
       // splashscreen should have been shown up till now - Hide it.
       this.hideSplashScreen();
       this.initializeApp();
       this.platform.pause.subscribe(() => {
-            console.log('[INFO] App paused');
+            console.log('MyApp.constructor() -> App paused');
       });
 
       this.platform.resume.subscribe(() => {
-            console.log('[INFO] App resumed');
+            console.log('MyApp.constructor() -> App resumed');
             this.hideSplashScreen();
             this.initializeApp();
             //this.util.reloadApp(this.alertCtrl,"Restart to upload latest data ...")
